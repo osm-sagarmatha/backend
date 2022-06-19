@@ -1,3 +1,5 @@
+import { startOfDay, endOfDay } from "date-fns";
+
 import Activity from "~/models/Activity";
 import { asyncHandler, ErrorResponse } from "~/utils";
 
@@ -30,4 +32,47 @@ const updateActivity = asyncHandler(async (req, res, next) => {
   return res.json({ success: true, activity });
 });
 
-export default { createActivity, updateActivity };
+const getActivitiesByUser = asyncHandler(async (req, res, next) => {
+  let userId = req.user.id;
+
+  if (typeof req.query.userId === "string") userId = req.query.userId;
+
+  const activity = await Activity.find({ user: userId });
+
+  return res.json({ success: true, activity });
+});
+
+const getActivitiesByUserOnDate = asyncHandler(async (req, res, next) => {
+  const date = +req.params.date;
+
+  let userId = req.user.id;
+
+  if (typeof req.query.userId === "string") userId = req.query.userId;
+
+  const activity = await Activity.find({
+    user: userId,
+    $or: [
+      {
+        startDate: {
+          $gt: startOfDay(new Date(date)),
+          $lt: endOfDay(new Date(date)),
+        },
+      },
+      {
+        endDate: {
+          $gt: startOfDay(new Date(date)),
+          $lt: endOfDay(new Date(date)),
+        },
+      },
+    ],
+  });
+
+  return res.json({ success: true, activity });
+});
+
+export default {
+  createActivity,
+  updateActivity,
+  getActivitiesByUser,
+  getActivitiesByUserOnDate,
+};

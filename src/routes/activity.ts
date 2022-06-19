@@ -21,6 +21,9 @@ router.patch(
   activityControllers.updateActivity
 );
 
+router.get("/user", activityControllers.getActivitiesByUser);
+router.get("/:date/user", activityControllers.getActivitiesByUserOnDate);
+
 function notEmpty(name: string, optional = false) {
   let mw = check(name);
 
