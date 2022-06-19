@@ -17,14 +17,13 @@ router.patch(
     notEmpty("email", "Email cannot be empty")
       .isEmail()
       .withMessage("Provided email is not a valid email"),
-    check("activities")
-      .optional()
-      .isArray()
-      .withMessage("Activities should be array"),
-    check("medicalConditions")
-      .optional()
-      .isArray()
-      .withMessage("Medical Conditions should be array"),
+
+    shouldBeArray("interestedActivities"),
+    shouldBeArray("medicalConditions"),
+
+    shouldBeNumber("points"),
+    shouldBeNumber("age"),
+    shouldBeNumber("weight"),
   ],
   userControllers.updateUser
 );
@@ -35,6 +34,20 @@ router.get("/around/friends", userControllers.getFriendsAroundUser);
 
 function notEmpty(name: string, message: string) {
   return check(name).optional().trim().notEmpty().withMessage(message);
+}
+
+function shouldBeNumber(name: string) {
+  return check(name)
+    .optional()
+    .isNumeric()
+    .withMessage(`${name} should be a number`);
+}
+
+function shouldBeArray(name: string) {
+  return check(name)
+    .optional()
+    .isArray()
+    .withMessage(`${name} should be array`);
 }
 
 export default router;

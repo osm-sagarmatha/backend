@@ -8,15 +8,20 @@ const getUserInfo = asyncHandler(async (req, res) => {
 const updateUser = asyncHandler(async (req, res, next) => {
   const userId = req.user.id;
 
-  const user = await User.findById(userId).select("-password");
+  const user = await User.findById(userId);
 
   if (!user) return next(new ErrorResponse("Something went wrong", 500));
 
   if (req.body.name) user.name = req.body.name;
   if (req.body.email) user.email = req.body.email;
   if (req.body.password) user.password = await hash.generate(req.body.password);
+  if (req.body.points) user.points = req.body.points;
+  if (req.body.age) user.age = req.body.age;
+  if (req.body.weight) user.weight = req.body.weight;
 
-  if (req.body.activities) user.activities = req.body.activities;
+  if (req.body.interestedActivities)
+    user.interestedActivities = req.body.interestedActivities;
+
   if (req.body.medicalConditions)
     user.medicalConditions = req.body.medicalConditions;
 

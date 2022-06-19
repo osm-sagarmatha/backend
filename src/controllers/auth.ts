@@ -25,12 +25,14 @@ const signup = asyncHandler(async (req, res, next) => {
   if (await User.findOne({ email: req.body.email }))
     return next(new ErrorResponse("User already exists", 400));
 
-  const { name, email, password } = req.body;
+  const { name, email, password, weight, age } = req.body;
 
   const hashedPassword = await hash.generate(password);
   const user = await User.create({
     name,
     email,
+    weight,
+    age,
     password: hashedPassword,
   });
 
