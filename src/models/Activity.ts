@@ -22,7 +22,7 @@ const activitySchema = new mongoose.Schema({
   },
   progress: {
     type: String,
-    default: `Walked 0km`,
+    default: `0km,0cal`,
   },
   endDate: Date,
 });
