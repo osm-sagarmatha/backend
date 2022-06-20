@@ -18,6 +18,8 @@ router.patch(
       .isEmail()
       .withMessage("Provided email is not a valid email"),
 
+    notEmpty("sex", "Sex cannot be empty"),
+
     shouldBeArray("interestedActivities"),
     shouldBeArray("medicalConditions"),
 

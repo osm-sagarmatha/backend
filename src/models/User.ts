@@ -10,6 +10,7 @@ export interface IUser extends Document {
   points: number;
   age: number;
   weight: number;
+  sex: string;
 
   medicalConditions: string[];
   interestedActivities: string[];
@@ -48,6 +49,10 @@ const userSchema = new mongoose.Schema(
     points: {
       type: Number,
       default: 0,
+    },
+    sex: {
+      type: String,
+      required: true,
     },
     age: {
       type: Number,

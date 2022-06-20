@@ -19,6 +19,8 @@ router.post(
       .isLength({ min: 5 })
       .withMessage("Password should be of more than 4 characters"),
 
+    notEmpty("sex", "Sex cannot be empty"),
+
     check("age").isNumeric().withMessage("Age should be a number"),
     check("weight").isNumeric().withMessage("Weight should be a number"),
   ],
