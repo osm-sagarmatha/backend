@@ -22,6 +22,7 @@ router.patch(
 
     shouldBeArray("interestedActivities"),
     shouldBeArray("medicalConditions"),
+    shouldBeArray("achievements"),
 
     shouldBeNumber("points"),
     shouldBeNumber("age"),

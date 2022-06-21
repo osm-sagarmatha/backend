@@ -19,6 +19,7 @@ const friendSchema = new mongoose.Schema({
   accepted: {
     type: Boolean,
     required: false,
+    default: false,
   },
 });
 

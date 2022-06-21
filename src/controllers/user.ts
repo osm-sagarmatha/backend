@@ -1,3 +1,4 @@
+import Friend from "~/models/Friend";
 import User from "~/models/User";
 import { asyncHandler, ErrorResponse, hash } from "~/utils";
 
@@ -25,7 +26,12 @@ const updateUser = asyncHandler(async (req, res, next) => {
   if (req.body.medicalConditions)
     user.medicalConditions = req.body.medicalConditions;
 
-  if (req.body.location?.lat && req.body.location?.long) {
+  if (req.body.achievements) user.achievements = req.body.achievements;
+
+  if (
+    typeof req.body.location?.lat === "number" &&
+    typeof req.body.location?.long === "number"
+  ) {
     user.location = {
       type: "Point",
       coordinates: [req.body.location.long, req.body.location.lat],
@@ -34,7 +40,10 @@ const updateUser = asyncHandler(async (req, res, next) => {
 
   await user.save();
 
-  return res.json({ success: true, user });
+  return res.json({
+    success: true,
+    user: { ...user.toObject(), password: null },
+  });
 });
 
 const getUsersAroundUser = asyncHandler(async (req, res, next) => {
@@ -45,7 +54,7 @@ const getUsersAroundUser = asyncHandler(async (req, res, next) => {
         $geometry: req.user.location,
       },
     },
-  });
+  }).select("-password");
 
   return res.json({ success: true, users });
 });
@@ -64,14 +73,14 @@ const getUsersAround = asyncHandler(async (req, res, next) => {
         },
       },
     },
-  });
+  }).select("-password");
 
   return res.json({ success: true, users });
 });
 
 const getFriendsAroundUser = asyncHandler(async (req, res, next) => {
   const users = await User.find({
-    id: {
+    _id: {
       $in: req.user.friends,
     },
     location: {
@@ -80,7 +89,7 @@ const getFriendsAroundUser = asyncHandler(async (req, res, next) => {
         $geometry: req.user.location,
       },
     },
-  });
+  }).select("-password");
 
   return res.json({ success: true, users });
 });

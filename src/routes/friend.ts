@@ -13,7 +13,7 @@ router.post(
 
 router.post(
   "/accept",
-  [check("userId").notEmpty().withMessage("User id cannot be empty")],
+  [check("friendId").notEmpty().withMessage("Friend id cannot be empty")],
   friendControllers.acceptFriend
 );
 

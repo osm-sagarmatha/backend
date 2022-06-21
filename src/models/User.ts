@@ -14,7 +14,8 @@ export interface IUser extends Document {
 
   medicalConditions: string[];
   interestedActivities: string[];
-  friends: string[] | IUser[];
+  achievements: string[];
+  friends: string[];
 }
 
 const userSchema = new mongoose.Schema(
@@ -69,6 +70,15 @@ const userSchema = new mongoose.Schema(
     },
     interestedActivities: {
       type: [String],
+      default: [],
+    },
+    achievements: {
+      type: [String],
+      default: [],
+    },
+    friends: {
+      type: [mongoose.Schema.Types.ObjectId],
+      ref: "User",
       default: [],
     },
   },
