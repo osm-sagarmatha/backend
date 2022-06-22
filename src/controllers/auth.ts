@@ -18,7 +18,11 @@ const login = asyncHandler(async (req, res, next) => {
   const payload = getPayLoad(user);
   const token = jwt.generate(payload);
 
-  return res.json({ success: true, token });
+  return res.json({
+    success: true,
+    token,
+    user: { ...user.toObject(), password: null },
+  });
 });
 
 const signup = asyncHandler(async (req, res, next) => {
@@ -40,7 +44,11 @@ const signup = asyncHandler(async (req, res, next) => {
   const payload = getPayLoad(user);
   const token = jwt.generate(payload);
 
-  return res.status(201).json({ success: true, token });
+  return res.status(201).json({
+    success: true,
+    token,
+    user: { ...user.toObject(), password: null },
+  });
 });
 
 export default { login, signup };
